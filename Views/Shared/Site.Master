@@ -7,7 +7,7 @@
 <head runat="server">
 
     <title>BibliotecaMVC</title>
-    <link href="~/Estilos/Site.css" rel="stylesheet" />
+    <link href="~/Estilos/site.css" rel="stylesheet" />
 
 </head>
 

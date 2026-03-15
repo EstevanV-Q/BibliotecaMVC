@@ -221,21 +221,15 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Libro\Index.cshtml" />
     <Content Include="Views\Libro\Registrar.cshtml" />
     <Content Include="Views\Libro\VerDetalle.cshtml" />
     <Content Include="Views\Libro\ErrorDetalle.cshtml" />
     <Content Include="Estilos\main.css" />
     <Content Include="Scripts\main.js" />
-=======
+    <Content Include="JS\main.js" />
     <Content Include="Views\Shared\Site.Master" />
->>>>>>> a3e47e7e00c52cad54d6597be584aac18fff2746
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Estilos\" />
-    <Folder Include="JS\" />
+    <Content Include="App_Data\InstalarBaseDatos.sql" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

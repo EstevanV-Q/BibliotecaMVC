@@ -1,0 +1,57 @@
+@model BibliotecaMVC.Models.Libro
+
+@{
+    ViewBag.Title = "Registrar Libro";
+}
+
+<h2>&#43; Registrar Nuevo Libro</h2>
+<p class="page-subtitle">Complete el formulario para agregar un libro al catálogo de la biblioteca virtual.</p>
+
+<div class="form-card">
+
+    @using (Html.BeginForm("Registrar", "Libro", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(false, "", new { @class = "validation-summary" })
+
+        <!-- Código -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.Codigo)
+            @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", placeholder = "Ej: L001", maxlength = "10" })
+            @Html.ValidationMessageFor(m => m.Codigo, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Título -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.Titulo)
+            @Html.TextBoxFor(m => m.Titulo, new { @class = "form-control", placeholder = "Ingrese el título completo del libro" })
+            @Html.ValidationMessageFor(m => m.Titulo, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Autor -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.Autor)
+            @Html.TextBoxFor(m => m.Autor, new { @class = "form-control", placeholder = "Nombre completo del autor" })
+            @Html.ValidationMessageFor(m => m.Autor, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Fecha de Publicación -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.FechaPublicacion)
+            @Html.TextBoxFor(m => m.FechaPublicacion, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            @Html.ValidationMessageFor(m => m.FechaPublicacion, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Botones -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">
+                &#128190; Guardar Libro
+            </button>
+            <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary">
+                &#8592; Volver al Listado
+            </a>
+        </div>
+    }
+
+</div>

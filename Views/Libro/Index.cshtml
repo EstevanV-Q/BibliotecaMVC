@@ -1,0 +1,132 @@
+@model IEnumerable<BibliotecaMVC.Models.Libro>
+
+@{
+    ViewBag.Title = "Consulta de Libros";
+}
+
+<!-- Encabezado de la página -->
+<div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+    <div>
+        <h2>&#128196; Catálogo de Libros</h2>
+        <p class="page-subtitle">Busque, consulte, vea el detalle o elimine libros del sistema.</p>
+    </div>
+    <a href="@Url.Action("Registrar", "Libro")" class="btn btn-success">
+        &#43; Nuevo Libro
+    </a>
+</div>
+
+<!-- MENSAJES DE RESULTADO -->
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        <span class="alert-icon">&#10003;</span>
+        <span>@TempData["Mensaje"]</span>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <span class="alert-icon">&#10007;</span>
+        <span>@TempData["Error"]</span>
+    </div>
+}
+
+<!-- FILTRO DE BÚSQUEDA -->
+<div class="filter-section">
+    @using (Html.BeginForm("Index", "Libro", FormMethod.Get))
+    {
+        <div class="filter-row">
+            <label class="filter-label">&#128269; Filtrar:</label>
+            <input type="text" name="filtro" id="filtro"
+                   value="@ViewBag.Filtro"
+                   class="filter-input"
+                   placeholder="Buscar por código o título..." />
+            <button type="submit" class="btn btn-primary btn-sm">
+                Buscar
+            </button>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.Filtro as string))
+    {
+        <div style="margin-top:.6rem; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <p style="font-size:.82rem; color:var(--text-muted); margin:0;">
+                Mostrando resultados para: <strong>"@ViewBag.Filtro"</strong>
+            </p>
+            <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary btn-sm">
+                &#10005; Limpiar
+            </a>
+        </div>
+    }
+</div>
+
+<!-- TABLA DE LIBROS (GridView) -->
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.Codigo)</th>
+                <th>@Html.DisplayNameFor(m => m.Titulo)</th>
+                <th>@Html.DisplayNameFor(m => m.Autor)</th>
+                <th>@Html.DisplayNameFor(m => m.FechaPublicacion)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-table">
+                            <span style="font-size:3rem; display:block; margin-bottom:1rem; opacity:.35;">&#128218;</span>
+                            <p>No se encontraron libros registrados.</p>
+                            <a href="@Url.Action("Registrar", "Libro")" class="btn btn-primary btn-sm">
+                                &#43; Registrar el primero
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td><span class="codigo-badge">@item.Codigo</span></td>
+                        <td><strong>@item.Titulo</strong></td>
+                        <td>@item.Autor</td>
+                        <td>@item.FechaPublicacion.ToShortDateString()</td>
+                        <td>
+                            <div class="action-group">
+                                <!-- Acción: Ver Detalle -->
+                                <a href="@Url.Action("VerDetalle", "Libro", new { id = item.Codigo })"
+                                   class="btn btn-primary btn-sm" title="Ver detalle completo">
+                                    &#128065; Detalle
+                                </a>
+
+                                <!-- Acción: Eliminar (con confirmación por JS) -->
+                                @using (Html.BeginForm("Eliminar", "Libro", FormMethod.Post, new { style = "display:inline;" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="codigo" value="@item.Codigo" />
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm btn-delete"
+                                            data-titulo="@item.Titulo"
+                                            title="Eliminar libro">
+                                        &#128465; Eliminar
+                                    </button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.Any())
+{
+    <p style="font-size:.82rem; color:var(--text-muted); margin-top:.5rem;">
+        &#9432; Mostrando <strong>@Model.Count()</strong> libro(s) en la biblioteca.
+    </p>
+}

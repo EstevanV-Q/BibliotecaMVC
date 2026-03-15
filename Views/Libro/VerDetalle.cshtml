@@ -1,0 +1,58 @@
+@model BibliotecaMVC.Models.Libro
+
+@{
+    ViewBag.Title = "Detalle del Libro";
+}
+
+<h2>&#128218; Detalle del Libro</h2>
+<p class="page-subtitle">Información completa del libro seleccionado desde el catálogo.</p>
+
+<div class="detail-card">
+
+    <!-- Cabecera visual del libro -->
+    <div class="detail-header">
+        <div class="book-icon">&#128218;</div>
+        <div>
+            <div class="book-title">@Model.Titulo</div>
+            <div class="book-code">Código: @Model.Codigo</div>
+        </div>
+    </div>
+
+    <!-- Grid de datos -->
+    <div class="detail-body">
+        <div class="detail-grid">
+
+            <div class="detail-label">Código</div>
+            <div class="detail-value">
+                <span class="codigo-badge">@Model.Codigo</span>
+            </div>
+
+            <div class="detail-label">Título</div>
+            <div class="detail-value">@Model.Titulo</div>
+
+            <div class="detail-label">Autor</div>
+            <div class="detail-value">@Model.Autor</div>
+
+            <div class="detail-label">Fecha de Publicación</div>
+            <div class="detail-value">@Model.FechaPublicacion.ToLongDateString()</div>
+
+        </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="detail-actions">
+        <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary">
+            &#8592; Volver al Catálogo
+        </a>
+
+        @using (Html.BeginForm("Eliminar", "Libro", FormMethod.Post, new { style = "display:inline;" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="codigo" value="@Model.Codigo" />
+            <button type="submit" class="btn btn-danger btn-delete" data-titulo="@Model.Titulo">
+                &#128465; Eliminar este libro
+            </button>
+        }
+    </div>
+
+</div>

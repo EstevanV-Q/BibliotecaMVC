@@ -1,116 +1,113 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using BibliotecaMVC.Models;
+using BibliotecaMVC.Data;
 
 namespace BibliotecaMVC.Controllers
 {
     public class LibroController : Controller
     {
-        // Lista en memoria para almacenar los libros (Simulación de BD)
-        private static List<Libro> listaLibros = new List<Libro>
-        {
-            new Libro { Codigo = "L001", Titulo = "El Quijote", Autor = "Miguel de Cervantes", FechaPublicacion = new DateTime(1605, 1, 1) },
-            new Libro { Codigo = "L002", Titulo = "Cien años de soledad", Autor = "Gabriel García Márquez", FechaPublicacion = new DateTime(1967, 5, 30) },
-            new Libro { Codigo = "L003", Titulo = "La Odisea", Autor = "Homero", FechaPublicacion = new DateTime(800, 1, 1) }
-        };
+        private BibliotecaContext db = new BibliotecaContext();
 
-        // GET: Libro/Index  — Consultar/Listar libros
+        // 1. CONSULTAR (GET: Libro/Index)
         [HttpGet]
         public ActionResult Index(string filtro)
         {
-            var libros = listaLibros.AsEnumerable();
+            var libros = from l in db.Libros
+                        select l;
 
             if (!string.IsNullOrEmpty(filtro))
             {
-                string f = filtro.ToLower();
-                libros = libros.Where(l =>
-                    l.Codigo.ToLower().Contains(f) ||
-                    l.Titulo.ToLower().Contains(f));
+                libros = libros.Where(l => l.Titulo.ToLower().Contains(filtro.ToLower()) ||
+                                         l.Codigo.ToLower().Contains(filtro.ToLower()));
             }
 
             ViewBag.Filtro = filtro;
             return View(libros.ToList());
         }
 
-        // GET: Libro/Registrar  — Mostrar formulario de registro
+        // 2. REGISTRAR - VISTA (GET: Libro/Registrar)
         [HttpGet]
         [ActionName("Registrar")]
         public ActionResult RegistrarGet()
         {
-            return View("Registrar", new Libro());
+            return View();
         }
 
-        // POST: Libro/Registrar  — Procesar el registro del libro
+        // 2. REGISTRAR - PROCESAR (POST: Libro/Registrar)
         [HttpPost]
-        [ActionName("Registrar")]
         [ValidateAntiForgeryToken]
+        [ActionName("Registrar")]
         public ActionResult RegistrarPost(Libro nuevoLibro)
         {
             if (ModelState.IsValid)
             {
                 // Verificar si el código ya existe
-                if (listaLibros.Any(l => l.Codigo.Equals(nuevoLibro.Codigo, StringComparison.OrdinalIgnoreCase)))
+                if (db.Libros.Any(l => l.Codigo == nuevoLibro.Codigo))
                 {
-                    ModelState.AddModelError("Codigo", "Este código de libro ya está registrado.");
-                    return View("Registrar", nuevoLibro);
+                    ModelState.AddModelError("Codigo", "Ya existe un libro registrado con ese código.");
+                    return View(nuevoLibro);
                 }
 
-                listaLibros.Add(nuevoLibro);
-                TempData["Mensaje"] = "✔ Libro \"" + nuevoLibro.Titulo + "\" registrado exitosamente.";
+                db.Libros.Add(nuevoLibro);
+                db.SaveChanges();
+
+                TempData["Mensaje"] = "¡Libro registrado con éxito en la base de datos!";
                 return RedirectToAction("Index");
             }
 
-            return View("Registrar", nuevoLibro);
+            return View(nuevoLibro);
         }
 
-        // GET: Libro/VerDetalle/{id}  — Ver información completa de un libro
+        // 3. VER DETALLE (GET: Libro/VerDetalle/id)
         [HttpGet]
         public ActionResult VerDetalle(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                ViewBag.Error = "No se proporcionó un código de libro válido.";
-                return View("ErrorDetalle");
+                return RedirectToAction("Index");
             }
 
-            var libro = listaLibros.FirstOrDefault(l => l.Codigo == id);
+            var libro = db.Libros.Find(id);
+
             if (libro == null)
             {
-                ViewBag.Error = "El libro con código \"" + id + "\" no se encuentra en el sistema.";
+                ViewBag.Error = "El libro con código [" + id + "] no fue encontrado en la base de datos.";
                 return View("ErrorDetalle");
             }
 
             return View(libro);
         }
 
-        // POST: Libro/Eliminar  — Eliminar un libro de la lista
+        // 4. ELIMINAR (POST: Libro/Eliminar)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Eliminar(string codigo)
         {
-            var libro = listaLibros.FirstOrDefault(l => l.Codigo == codigo);
+            var libro = db.Libros.Find(codigo);
             if (libro != null)
             {
-                string titulo = libro.Titulo;
-                listaLibros.Remove(libro);
-                TempData["Mensaje"] = "✔ El libro \"" + titulo + "\" fue eliminado correctamente.";
+                db.Libros.Remove(libro);
+                db.SaveChanges();
+                TempData["Mensaje"] = "El libro ha sido eliminado de la base de datos.";
             }
             else
             {
-                TempData["Error"] = "✘ No se encontró el libro para eliminar.";
+                TempData["Error"] = "No se pudo encontrar el libro para eliminar.";
             }
 
             return RedirectToAction("Index");
         }
 
-        // Método auxiliar interno — no accesible como acción HTTP
-        [NonAction]
-        public bool ExisteLibro(string codigo)
+        protected override void Dispose(bool disposing)
         {
-            return listaLibros.Any(l => l.Codigo == codigo);
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

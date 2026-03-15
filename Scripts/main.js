@@ -4,9 +4,9 @@
  */
 document.addEventListener('DOMContentLoaded', function () {
 
-    /* -----------------------------------------------
+    /* 
        1. CONFIRMACIÓN DE ELIMINACIÓN
-       ----------------------------------------------- */
+    */
     document.querySelectorAll('.btn-delete').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             var titulo = btn.getAttribute('data-titulo') || 'este libro';
@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    /* -----------------------------------------------
+    /* 
        2. AUTO-OCULTAR ALERTAS DESPUÉS DE 5 SEGUNDOS
-       ----------------------------------------------- */
+    */
     var alerts = document.querySelectorAll('.alert');
     if (alerts.length > 0) {
         setTimeout(function () {
@@ -36,18 +36,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 5000);
     }
 
-    /* -----------------------------------------------
+    /* 
        3. RESALTAR FILA DE TABLA AL PASAR EL MOUSE
-       ----------------------------------------------- */
+    */
     document.querySelectorAll('table tbody tr').forEach(function (row) {
         row.addEventListener('mouseenter', function () {
             row.style.transition = 'background-color 0.2s';
         });
     });
 
-    /* -----------------------------------------------
+    /* 
        4. EFECTO DE FOCO EN INPUT DE FILTRO
-       ----------------------------------------------- */
+    */
     var filtroInput = document.getElementById('filtro');
     if (filtroInput) {
         filtroInput.addEventListener('focus', function () {
@@ -59,9 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /* -----------------------------------------------
+    /* 
        5. ANIMACIÓN FADE-IN PARA ELEMENTOS DE TABLA
-       ----------------------------------------------- */
+    */
     var rows = document.querySelectorAll('table tbody tr');
     rows.forEach(function (row, index) {
         row.style.opacity = '0';

@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="BibliotecaMVC - Sistema de gestión de biblioteca virtual en ASP.NET MVC" />
     <title>@ViewBag.Title - BibliotecaMVC</title>
-
-    <!-- Font Awesome (iconos) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- CSS personalizado -->
+    <!-- Solo CSS propio, sin Bootstrap ni librerías externas -->
     <link href="~/Estilos/main.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
-    <!-- ============ HEADER / MASTER PAGE ============ -->
+    <!-- HEADER / MASTER PAGE -->
     <header>
         <div class="header-top">
-            <span class="site-icon"><i class="fas fa-book-open"></i></span>
+            <span class="site-icon">&#128218;</span>
             <h1>Biblioteca Virtual &mdash; BibliotecaMVC</h1>
         </div>
         <nav>
@@ -24,45 +21,44 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")"
                        class="@(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")">
-                        <i class="fas fa-house"></i> Inicio
+                        &#127968; Inicio
                     </a>
                 </li>
                 <li>
                     <a href="@Url.Action("Index", "Libro")"
                        class="@(ViewContext.RouteData.Values["controller"].ToString() == "Libro" && ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
-                        <i class="fas fa-list"></i> Consultar Libros
+                        &#128196; Consultar Libros
                     </a>
                 </li>
                 <li>
                     <a href="@Url.Action("Registrar", "Libro")"
                        class="@(ViewContext.RouteData.Values["action"].ToString() == "Registrar" ? "active" : "")">
-                        <i class="fas fa-plus-circle"></i> Registrar Libro
+                        &#43; Registrar Libro
                     </a>
                 </li>
             </ul>
         </nav>
     </header>
 
-    <!-- ============ CONTENIDO PRINCIPAL ============ -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="container fade-in">
         @RenderBody()
     </div>
 
-    <!-- ============ FOOTER ============ -->
+    <!-- FOOTER -->
     <footer>
         <p>
             &copy; @DateTime.Now.Year &nbsp;&bull;&nbsp;
             <strong>BibliotecaMVC</strong> &nbsp;&bull;&nbsp;
-            Estudiante: <strong>[Nombre del Estudiante]</strong> &nbsp;&bull;&nbsp;
+            Caldosacr <strong>Profe nos liberas del sufrimiento?</strong> &nbsp;&bull;&nbsp;
             Fecha: <strong>@DateTime.Now.ToString("dd/MM/yyyy")</strong>
         </p>
         <p style="margin-top:4px; font-size:.75rem; opacity:.6;">
-            ASP.NET MVC &bull; .NET Framework &bull; C# &bull; Patrón MVC
+            No sea &bull; Malo profe &bull; C# &bull; nos costo el desarrollo &bull; pero lo logramos &bull; gracias por su paciencia &bull; y por enseñarnos &bull; a programar con pasión
         </p>
     </footer>
 
-    <!-- ============ SCRIPTS ============ -->
-    <script src="~/Scripts/jquery-3.7.0.min.js"></script>
+    <!-- Solo JS propio -->
     <script src="~/Scripts/main.js"></script>
     @RenderSection("Scripts", required: false)
 

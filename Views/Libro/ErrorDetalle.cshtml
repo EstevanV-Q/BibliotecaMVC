@@ -3,19 +3,17 @@
 }
 
 <div style="max-width:560px; margin: 3rem auto; text-align:center;">
-    <div style="font-size:5rem; color:#e2e8f0; margin-bottom:1.5rem;">
-        <i class="fas fa-book-skull"></i>
-    </div>
+    <div style="font-size:5rem; color:#e2e8f0; margin-bottom:1.5rem;">&#128218;</div>
     <h2 style="color:var(--danger); margin-bottom:.75rem;">Libro no encontrado</h2>
     <p style="color:var(--text-muted); font-size:.95rem; margin-bottom:2rem;">
         @ViewBag.Error
     </p>
     <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
         <a href="@Url.Action("Index", "Libro")" class="btn btn-primary">
-            <i class="fas fa-list"></i> Ir al Catálogo
+            &#128196; Ir al Catálogo
         </a>
         <a href="@Url.Action("Registrar", "Libro")" class="btn btn-success">
-            <i class="fas fa-plus"></i> Registrar Nuevo
+            &#43; Registrar Nuevo
         </a>
     </div>
 </div>

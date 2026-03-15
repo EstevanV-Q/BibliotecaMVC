@@ -1,10 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BibliotecaMVC.Models
 {
+    [Table("Libro")]
     public class Libro
     {
+        [Key]
         [Required(ErrorMessage = "El código es obligatorio.")]
         [StringLength(10, ErrorMessage = "El código no puede exceder los 10 caracteres.")]
         [Display(Name = "Código")]

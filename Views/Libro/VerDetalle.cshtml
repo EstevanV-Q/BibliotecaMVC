@@ -4,17 +4,17 @@
     ViewBag.Title = "Detalle del Libro";
 }
 
-<h2><i class="fas fa-book-open" style="color:var(--accent);"></i> Detalle del Libro</h2>
+<h2>&#128218; Detalle del Libro</h2>
 <p class="page-subtitle">Información completa del libro seleccionado desde el catálogo.</p>
 
 <div class="detail-card">
 
     <!-- Cabecera visual del libro -->
     <div class="detail-header">
-        <div class="book-icon"><i class="fas fa-book"></i></div>
+        <div class="book-icon">&#128218;</div>
         <div>
             <div class="book-title">@Model.Titulo</div>
-            <div class="book-code"><i class="fas fa-barcode"></i> Código: @Model.Codigo</div>
+            <div class="book-code">Código: @Model.Codigo</div>
         </div>
     </div>
 
@@ -22,18 +22,18 @@
     <div class="detail-body">
         <div class="detail-grid">
 
-            <div class="detail-label"><i class="fas fa-barcode"></i> Código</div>
+            <div class="detail-label">Código</div>
             <div class="detail-value">
                 <span class="codigo-badge">@Model.Codigo</span>
             </div>
 
-            <div class="detail-label"><i class="fas fa-book"></i> Título</div>
+            <div class="detail-label">Título</div>
             <div class="detail-value">@Model.Titulo</div>
 
-            <div class="detail-label"><i class="fas fa-user-pen"></i> Autor</div>
+            <div class="detail-label">Autor</div>
             <div class="detail-value">@Model.Autor</div>
 
-            <div class="detail-label"><i class="fas fa-calendar-days"></i> Publicación</div>
+            <div class="detail-label">Fecha de Publicación</div>
             <div class="detail-value">@Model.FechaPublicacion.ToLongDateString()</div>
 
         </div>
@@ -42,7 +42,7 @@
     <!-- Acciones -->
     <div class="detail-actions">
         <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Volver al Catálogo
+            &#8592; Volver al Catálogo
         </a>
 
         @using (Html.BeginForm("Eliminar", "Libro", FormMethod.Post, new { style = "display:inline;" }))
@@ -50,7 +50,7 @@
             @Html.AntiForgeryToken()
             <input type="hidden" name="codigo" value="@Model.Codigo" />
             <button type="submit" class="btn btn-danger btn-delete" data-titulo="@Model.Titulo">
-                <i class="fas fa-trash"></i> Eliminar este libro
+                &#128465; Eliminar este libro
             </button>
         }
     </div>

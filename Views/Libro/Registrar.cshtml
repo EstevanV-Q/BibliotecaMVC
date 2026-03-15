@@ -4,7 +4,7 @@
     ViewBag.Title = "Registrar Libro";
 }
 
-<h2><i class="fas fa-plus-circle" style="color:var(--accent);"></i> Registrar Nuevo Libro</h2>
+<h2>&#43; Registrar Nuevo Libro</h2>
 <p class="page-subtitle">Complete el formulario para agregar un libro al catálogo de la biblioteca virtual.</p>
 
 <div class="form-card">
@@ -46,17 +46,12 @@
         <!-- Botones -->
         <div class="form-actions">
             <button type="submit" class="btn btn-success">
-                <i class="fas fa-floppy-disk"></i> Guardar Libro
+                &#128190; Guardar Libro
             </button>
             <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Volver al Listado
+                &#8592; Volver al Listado
             </a>
         </div>
     }
 
 </div>
-
-@section Scripts {
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-}

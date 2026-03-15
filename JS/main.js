@@ -1,4 +1,4 @@
-/**
+﻿/**
  * BibliotecaMVC - main.js
  * Interacciones y efectos para la interfaz de usuario
  */

@@ -44,19 +44,18 @@
             <button type="submit" class="btn btn-primary btn-sm">
                 <i class="fas fa-search"></i> Buscar
             </button>
-            @if (!string.IsNullOrEmpty(ViewBag.Filtro as string))
-            {
-                <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary btn-sm">
-                    <i class="fas fa-xmark"></i> Limpiar
-                </a>
-            }
         </div>
-        @if (!string.IsNullOrEmpty(ViewBag.Filtro as string))
-        {
-            <p style="margin-top:.6rem; font-size:.82rem; color:var(--text-muted);">
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.Filtro as string))
+    {
+        <div style="margin-top:.6rem; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <p style="font-size:.82rem; color:var(--text-muted); margin:0;">
                 Mostrando resultados para: <strong>"@ViewBag.Filtro"</strong>
             </p>
-        }
+            <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary btn-sm">
+                <i class="fas fa-xmark"></i> Limpiar
+            </a>
+        </div>
     }
 </div>
 

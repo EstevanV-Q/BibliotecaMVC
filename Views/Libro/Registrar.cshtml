@@ -13,14 +13,7 @@
     {
         @Html.AntiForgeryToken()
 
-        @* Resumen de errores de validación *@
-        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
-        {
-            <div class="validation-summary">
-                <strong><i class="fas fa-triangle-exclamation"></i> Corrija los siguientes errores:</strong>
-                @Html.ValidationSummary(true)
-            </div>
-        }
+        @Html.ValidationSummary(false, "", new { @class = "validation-summary" })
 
         <!-- Código -->
         <div class="form-group">

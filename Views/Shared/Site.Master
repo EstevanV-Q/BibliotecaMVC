@@ -1,0 +1,32 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="BibliotecaMVC.Views.Shared.Site" %>
+
+<!DOCTYPE html>
+
+<html>
+
+<head runat="server">
+
+    <title>BibliotecaMVC</title>
+    <link href="~/Estilos/site.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <form id="form1" runat="server">
+
+        <div class="barra">
+
+            <a id="lbrRegistrar" runat="server" href="~/Libros/RegistrarLibro">Registrar Libro</a>
+            <a id="lbrConsultar" runat="server" href="~/Libros/ConsultarLibro">Consultar Libro</a>
+            <a id="lbrDetalle" runat="server" href="~/Libros/DetalleLibro">Detalle Libro</a>
+
+        </div>
+        <div class="container">
+
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+
+        </div>
+    </form>
+</body>
+</html>

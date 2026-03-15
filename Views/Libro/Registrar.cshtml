@@ -1,0 +1,69 @@
+@model BibliotecaMVC.Models.Libro
+
+@{
+    ViewBag.Title = "Registrar Libro";
+}
+
+<h2><i class="fas fa-plus-circle" style="color:var(--accent);"></i> Registrar Nuevo Libro</h2>
+<p class="page-subtitle">Complete el formulario para agregar un libro al catálogo de la biblioteca virtual.</p>
+
+<div class="form-card">
+
+    @using (Html.BeginForm("Registrar", "Libro", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @* Resumen de errores de validación *@
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+        {
+            <div class="validation-summary">
+                <strong><i class="fas fa-triangle-exclamation"></i> Corrija los siguientes errores:</strong>
+                @Html.ValidationSummary(true)
+            </div>
+        }
+
+        <!-- Código -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.Codigo)
+            @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control", placeholder = "Ej: L001", maxlength = "10" })
+            @Html.ValidationMessageFor(m => m.Codigo, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Título -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.Titulo)
+            @Html.TextBoxFor(m => m.Titulo, new { @class = "form-control", placeholder = "Ingrese el título completo del libro" })
+            @Html.ValidationMessageFor(m => m.Titulo, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Autor -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.Autor)
+            @Html.TextBoxFor(m => m.Autor, new { @class = "form-control", placeholder = "Nombre completo del autor" })
+            @Html.ValidationMessageFor(m => m.Autor, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Fecha de Publicación -->
+        <div class="form-group">
+            @Html.LabelFor(m => m.FechaPublicacion)
+            @Html.TextBoxFor(m => m.FechaPublicacion, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+            @Html.ValidationMessageFor(m => m.FechaPublicacion, "", new { @class = "field-error" })
+        </div>
+
+        <!-- Botones -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-floppy-disk"></i> Guardar Libro
+            </button>
+            <a href="@Url.Action("Index", "Libro")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver al Listado
+            </a>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}

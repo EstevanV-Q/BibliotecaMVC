@@ -3,29 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using BibliotecaMVC.Models;
-using BibliotecaMVC.Data;
 
 namespace BibliotecaMVC.Controllers
 {
     public class LibroController : Controller
     {
-        private BibliotecaContext db = new BibliotecaContext();
+        // Lista estática en memoria (simula una base de datos)
+        private static List<Libro> libros = new List<Libro>
+        {
+            new Libro { Codigo = "L001", Titulo = "El Quijote", Autor = "Miguel de Cervantes", FechaPublicacion = new DateTime(1605, 1, 16) },
+            new Libro { Codigo = "L002", Titulo = "Cien años de soledad", Autor = "Gabriel García Márquez", FechaPublicacion = new DateTime(1967, 5, 30) },
+            new Libro { Codigo = "L003", Titulo = "1984", Autor = "George Orwell", FechaPublicacion = new DateTime(1949, 6, 8) }
+        };
 
         // 1. CONSULTAR (GET: Libro/Index)
         [HttpGet]
         public ActionResult Index(string filtro)
         {
-            var libros = from l in db.Libros
-                        select l;
+            var resultado = libros.AsEnumerable();
 
             if (!string.IsNullOrEmpty(filtro))
             {
-                libros = libros.Where(l => l.Titulo.ToLower().Contains(filtro.ToLower()) ||
-                                         l.Codigo.ToLower().Contains(filtro.ToLower()));
+                resultado = libros.Where(l =>
+                    l.Titulo.ToLower().Contains(filtro.ToLower()) ||
+                    l.Codigo.ToLower().Contains(filtro.ToLower()));
             }
 
             ViewBag.Filtro = filtro;
-            return View(libros.ToList());
+            return View(resultado.ToList());
         }
 
         // 2. REGISTRAR - VISTA (GET: Libro/Registrar)
@@ -44,17 +49,14 @@ namespace BibliotecaMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Verificar si el código ya existe
-                if (db.Libros.Any(l => l.Codigo == nuevoLibro.Codigo))
+                if (libros.Any(l => l.Codigo == nuevoLibro.Codigo))
                 {
                     ModelState.AddModelError("Codigo", "Ya existe un libro registrado con ese código.");
                     return View(nuevoLibro);
                 }
 
-                db.Libros.Add(nuevoLibro);
-                db.SaveChanges();
-
-                TempData["Mensaje"] = "¡Libro registrado con éxito en la base de datos!";
+                libros.Add(nuevoLibro);
+                TempData["Mensaje"] = "¡Libro registrado con éxito!";
                 return RedirectToAction("Index");
             }
 
@@ -70,11 +72,11 @@ namespace BibliotecaMVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            var libro = db.Libros.Find(id);
+            var libro = libros.FirstOrDefault(l => l.Codigo == id);
 
             if (libro == null)
             {
-                ViewBag.Error = "El libro con código [" + id + "] no fue encontrado en la base de datos.";
+                ViewBag.Error = "El libro con código [" + id + "] no fue encontrado.";
                 return View("ErrorDetalle");
             }
 
@@ -86,12 +88,11 @@ namespace BibliotecaMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Eliminar(string codigo)
         {
-            var libro = db.Libros.Find(codigo);
+            var libro = libros.FirstOrDefault(l => l.Codigo == codigo);
             if (libro != null)
             {
-                db.Libros.Remove(libro);
-                db.SaveChanges();
-                TempData["Mensaje"] = "El libro ha sido eliminado de la base de datos.";
+                libros.Remove(libro);
+                TempData["Mensaje"] = "El libro ha sido eliminado.";
             }
             else
             {
@@ -99,15 +100,6 @@ namespace BibliotecaMVC.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
